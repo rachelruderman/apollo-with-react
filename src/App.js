@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import ApolloClient from 'apollo-boost';
-import {ApolloProvider} from 'react-apollo';
+import {ApolloProvider, Query} from 'react-apollo';
 import gql from 'graphql-tag';
 
 const client = new ApolloClient({
     uri: 'https://api.spacex.land/graphql'
 });
 
-const testQuery = gql`
+const LAUNCHES_PAST_QUERY = gql`
     {
         launchesPast(limit: 2) {
             mission_name
@@ -19,7 +18,7 @@ const testQuery = gql`
 `;
 
 client.query({
-    query: testQuery
+    query: LAUNCHES_PAST_QUERY
 }).then(res => console.log(res));
 
 class App extends Component {
@@ -28,18 +27,18 @@ class App extends Component {
         <ApolloProvider client={client}>
           <div className="App">
             <header className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
-              <p>
-                Edit <code>src/App.js</code> and save to reload.
-              </p>
-              <a
-                className="App-link"
-                href="https://reactjs.org"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learn React
-              </a>
+                <Query query={LAUNCHES_PAST_QUERY}>
+                    {({loading, data}) => {
+                        if (loading) return 'Loading...';
+                        const {launchesPast} = data;
+                        return launchesPast.map( (launch, i) => {
+                            const {mission_name} = launch;
+                            return (
+                                <h1 key={i}>{mission_name}</h1>
+                            )
+                        })
+                    }}
+                </Query>
             </header>
           </div>
         </ApolloProvider>
