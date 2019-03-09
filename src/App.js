@@ -3,10 +3,24 @@ import logo from './logo.svg';
 import './App.css';
 import ApolloClient from 'apollo-boost';
 import {ApolloProvider} from 'react-apollo';
+import gql from 'graphql-tag';
 
 const client = new ApolloClient({
     uri: 'https://api.spacex.land/graphql'
 });
+
+const testQuery = gql`
+    {
+        launchesPast(limit: 2) {
+            mission_name
+            launch_date_local
+        }
+    }
+`;
+
+client.query({
+    query: testQuery
+}).then(res => console.log(res));
 
 class App extends Component {
   render() {
