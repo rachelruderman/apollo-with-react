@@ -9,7 +9,7 @@ const client = new ApolloClient({
 });
 
 const LAUNCHES_PAST_QUERY = gql`
-    {
+    query launchesPast {
         launchesPast(limit: 2) {
             mission_name
             launch_date_local
