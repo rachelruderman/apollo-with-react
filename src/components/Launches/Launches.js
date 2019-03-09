@@ -20,10 +20,10 @@ class Launches extends Component {
                 {({loading, data}) => {
                     if (loading) return 'Loading...';
                     const {launchesPast} = data;
-                    return launchesPast.map( (launch, i) => {
+                    return launchesPast.map( launch => {
                         const {mission_name, id} = launch;
                         return (
-                            <Link to={`launch/${id}`} key={i}>
+                            <Link to={`launch/${id}`} key={id}>
                                 <h1>{mission_name}</h1>
                             </Link>
                         )
