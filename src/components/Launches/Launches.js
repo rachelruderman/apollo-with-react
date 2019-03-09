@@ -8,6 +8,7 @@ const LAUNCHES_PAST_QUERY = gql`
         launchesPast(limit: 2) {
             mission_name
             launch_date_local
+            id
         }
     }
 `;
