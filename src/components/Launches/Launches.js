@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 
 const LAUNCHES_PAST_QUERY = gql`
     query launchesPast {
-        launchesPast(limit: 2) {
+        launchesPast(limit: 12) {
             mission_name
             launch_date_local
             id
@@ -16,20 +16,21 @@ const LAUNCHES_PAST_QUERY = gql`
 class Launches extends Component {
     render() {
         return (
-            <Query query={LAUNCHES_PAST_QUERY}>
-                {({loading, data}) => {
-                    if (loading) return 'Loading...';
-                    const {launchesPast} = data;
-                    return launchesPast.map( launch => {
-                        const {mission_name, id} = launch;
-                        return (
-                            <Link to={`launch/${id}`} key={id}>
-                                <h1>{mission_name}</h1>
-                            </Link>
-                        )
-                    })
-                }}
-            </Query>
+            <ul>
+                <Query query={LAUNCHES_PAST_QUERY}>
+                    {({loading, data}) => {
+                        if (loading) return 'Loading...';
+                        const {launchesPast} = data;
+                        return launchesPast.map( ({mission_name, id}) => {
+                            return (
+                                <li key={id}>
+                                    <Link to={`launch/${id}`}>{mission_name}</Link>
+                                </li>
+                            )
+                        })
+                    }}
+                </Query>
+            </ul>
         );
     }
 }
